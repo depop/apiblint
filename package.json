@@ -1,0 +1,38 @@
+{
+  "name": "@depop/apiblint",
+  "version": "0.1.0",
+  "description": "Linter for .apib blueprint docs, can be run as a pre-commit hook.",
+  "main": "src/cli.js",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "drafter": "^2.0.0-pre.1",
+    "esm": "^3.2.25",
+    "yargs": "^13.3.0"
+  },
+  "devDependencies": {},
+  "bin": {
+    "@depop/apiblint": "bin/apiblint",
+    "apiblint": "bin/apiblint"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depop/apiblint.git"
+  },
+  "keywords": [
+    "cli",
+    "apib",
+    "blueprint"
+  ],
+  "author": "dev@depop.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/depop/apiblint/issues"
+  },
+  "homepage": "https://github.com/depop/apiblint#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}
