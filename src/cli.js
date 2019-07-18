@@ -23,7 +23,6 @@ function parseArgs(rawArgs) {
   ;
 }
 
-export function cli(args) {
-  lint(parseArgs(args));
-  return 0;
+export async function cli(args) {
+  await lint(parseArgs(args));
 }
