@@ -12,22 +12,14 @@ import range from 'python-range';
 const validateBlueprint = util.promisify(drafter.validate)
 
 
-const IGNORE_FILE_EXT = '.apiblint';
 const IGNORE_PATTERN = /(\s*\d+)\: ?(.*)/
 const LINE_NO_SEP = ': '
 const NEWLINE = /\r\n|\r|\n/;
 const SEPARATOR = "-----------";
 
 
-function pad({pad=' ', suffix=''} = {}, padSize, val) {
-	return String(val).padStart(padSize, pad) + suffix;
-}
-
-class CustomError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "CustomError";
-  }
+function lpad({padWith=' ', suffix=''} = {}, padSize, val) {
+	return String(val).padStart(padSize, padWith) + suffix;
 }
 
 function getPosInfo(warning) {
@@ -75,9 +67,9 @@ function parseIgnoreFile(ignoreFile) {
 	return ignores;
 }
 
-function formatWarning(lines, posInfo, contextSize=2) {
+function formatWarning(lines, contextSize, posInfo) {
 	let formatted = [];
-	let formatLineNo = partial(pad, {suffix: LINE_NO_SEP}, String(lines.length).length);
+	let formatLineNo = partial(lpad, {suffix: LINE_NO_SEP}, String(lines.length).length);
 	for (let i of range(
 		Math.max(0, posInfo.startLine - contextSize),
 		Math.min(lines.length, posInfo.endLine + contextSize + 1)
@@ -112,7 +104,7 @@ function formatWarning(lines, posInfo, contextSize=2) {
 	return formatted;
 }
 
-function shouldIgnore(ignores, warning, posInfo, context, fuzzFactor=8) {
+function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
 	let ignoreBlocks = ignores.get(warning.content);
 	if (!ignoreBlocks) {
 		return false;
@@ -129,10 +121,10 @@ function shouldIgnore(ignores, warning, posInfo, context, fuzzFactor=8) {
 	});
 }
 
-async function processWarnings(lines, warnings, filename) {
+async function processWarnings(options, lines, warnings, filename) {
 	console.log(chalk.red.bold(warnings.length + " linting issues found"));
 
-	let ignoreFileName = filename + IGNORE_FILE_EXT;
+	let ignoreFileName = filename + options.ignoreFileExt;
 	console.log(
 		'To ignore any of these instances, copy and paste the section (including ' +
 		'separators) to the ignore file: ' + chalk.bold(ignoreFileName)
@@ -140,8 +132,8 @@ async function processWarnings(lines, warnings, filename) {
 	let ignoreFile = await fs.readFile(ignoreFileName, 'utf8').catch(err => {});
 	let ignores = parseIgnoreFile(ignoreFile);
 
-	let formatWarning_ = partial(formatWarning, lines);
-	let shouldIgnore_ = partial(shouldIgnore, ignores);
+	let formatWarning_ = partial(formatWarning, lines, options.contextSize);
+	let shouldIgnore_ = partial(shouldIgnore, ignores, options.fuzzFactor);
 	let exitCode = 0;
 
 	warnings.slice(0, 3).forEach((warning, warningIndex) => {
@@ -169,28 +161,24 @@ async function processWarnings(lines, warnings, filename) {
 	return exitCode;
 }
 
-export async function lintFile(filename) {
+export async function lintFile(options, filename) {
 	console.log(chalk.bold(filename));
 
 	let blueprint = await fs.readFile(filename, 'utf8');
-
-	let options = {
-	  requireBlueprintName: true,
-	};
-	let warnings = await validateBlueprint(blueprint, options).catch(err => {
-  		// I'm not sure how to cause an 'error'
-  		// (passing a non-apib file still gives a parseResult)
-  		console.log(chalk.red.bold("Error:"), err);
-  		process.exit(2);
+	let warnings = await validateBlueprint(blueprint, options.drafterOpts).catch(err => {
+		// 🤔 I'm not sure how to cause an 'error'
+		// (passing a non-apib file still gives a parseResult)
+		console.log(chalk.red.bold("Error:"), err);
+		process.exit(2);
   });
 
   let exitCode = 0;
   if (warnings) {
-		// linter found stuff to report...
+		// ⚠️
 		if (warnings.element == 'parseResult') {
 			// typical linting results
 		  let lines = blueprint.split(NEWLINE);
-			exitCode = await processWarnings(lines, warnings.content, filename);
+			exitCode = await processWarnings(options, lines, warnings.content, filename);
 		} else {
 			// "should not happen"
   		console.log(chalk.red.bold("Error: unrecognised linter result"), warnings);
@@ -203,8 +191,15 @@ export async function lintFile(filename) {
 	return exitCode;
 }
 
-export async function lint(args) {
-	// TODO: throw error, resolve to exit codes in cli.js
-	let exitCodes = await Promise.all(args.files.map(lintFile));
-	process.exit(Math.max(...exitCodes));
+/**
+ * (main entrypoint)
+ * Lint a set of files
+ *
+ * @param {Array<string>} files - Paths to the files to be linted
+ * @param {Object} options - Config values for use in downstream methods
+ * @returns {Array<number>} An 'exitCode' value for each file linted
+ */
+export async function lint(files, options) {
+	let lintFile_ = partial(lintFile, options)
+	return await Promise.all(files.map(lintFile_));
 }
