@@ -2,6 +2,10 @@ import yargs from 'yargs'
 import {lint} from './linter'
 
 
+/**
+ * @param {Array<string>} rawArgs - i.e. from `process.argv`
+ * @returns {Object} parsed args
+ */
 function parseArgs(rawArgs) {
   return yargs
     .command('$0 <files...>', 'Lint a set of .apib files', (yargs) => {
@@ -22,6 +26,10 @@ function parseArgs(rawArgs) {
   ;
 }
 
+/**
+ * @param {Array<string>} args - from `parseArgs`
+ * @returns {Object} an options object suitable for use with `lint`
+ */
 function optionsFromArgs(args) {
   return {
     fuzzFactor: args.fuzzyLineRange,
@@ -33,6 +41,12 @@ function optionsFromArgs(args) {
   }
 }
 
+/**
+ * (main entrypoint)
+ * Runs the `lint` function and exits.
+ *
+ * @param {Array<string>} rawArgs - i.e. from process.argv
+ */
 export async function cli(rawArgs) {
   let args = parseArgs(rawArgs);
   let options = optionsFromArgs(args);

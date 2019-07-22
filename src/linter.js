@@ -1,13 +1,15 @@
-const fs = require('fs').promises;
-const util = require('util');
+import {promises as fs} from 'fs'
+import util from 'util';
 
-const chalk = require('chalk');
-const drafter = require('drafter');
-const escapeStringRegexp = require('escape-string-regexp');
-const partial = require('lodash.partial');
-const unzip = require('lodash.unzip');
-const stripAnsi = require('strip-ansi');
+import chalk from 'chalk';
+import drafter from 'drafter';
+import escapeStringRegexp from 'escape-string-regexp';
+import partial from 'lodash.partial';
+import unzip from 'lodash.unzip';
+import stripAnsi from 'strip-ansi';
 import range from 'python-range';
+
+import {lpad} from './utils';
 
 const validateBlueprint = util.promisify(drafter.validate)
 
@@ -18,26 +20,12 @@ const NEWLINE = /\r\n|\r|\n/;
 const SEPARATOR = "-----------";
 
 
-function lpad({padWith=' ', suffix=''} = {}, padSize, val) {
-	return String(val).padStart(padSize, padWith) + suffix;
-}
-
-function getPosInfo(warning) {
-		let sourcePositions = warning.attributes.sourceMap.content[0].content;
-		let first = sourcePositions[0];
-		let last = sourcePositions.slice(-1)[0];
-		// sourcePosition objects contain a pair of values, so content[0]
-		// is the start info and content[1] is the end info of a pos.
-		// For some reason each sourcePosition selects a single line only
-		// so there are multiple sourcePosition objects per warning 🤷‍♂️
-		return {
-			startLine: first.content[0].attributes.line.content - 1,
-			startChar: first.content[0].attributes.column.content - 1,
-			endLine: last.content[1].attributes.line.content - 1,
-			endChar: last.content[1].attributes.column.content - 1,
-		}
-}
-
+/**
+ * Parse an .apiblint ignore file returning details of warnings to be ignored.
+ *
+ * @param {string} ignoreFile - Path to an .apiblint ignore file
+ * @returns {Map<string, Array<Object>>} Parsed representation of ignore file
+ */
 function parseIgnoreFile(ignoreFile) {
 	if (!ignoreFile) {
 		return [];
@@ -67,7 +55,17 @@ function parseIgnoreFile(ignoreFile) {
 	return ignores;
 }
 
-function formatWarning(lines, contextSize, posInfo) {
+/**
+ * Take linting results (from drafter.validate tool) and iterate over the
+ * warnings, either presenting or ignoring them according to .apiblint file.
+ *
+ * @param {Array<string>} lines - The .apib source file as array of lines
+ * @param {number} contextSize - How many lines ± of context to display around
+ *		the lines highlighted by the warning code-span
+ * @param {Object} posInfo - Describes the code-span referenced by the warning
+ * @returns {string} The formatted warning details
+ */
+ function formatWarning(lines, contextSize, posInfo) {
 	let formatted = [];
 	let formatLineNo = partial(lpad, {suffix: LINE_NO_SEP}, String(lines.length).length);
 	for (let i of range(
@@ -104,6 +102,18 @@ function formatWarning(lines, contextSize, posInfo) {
 	return formatted;
 }
 
+/**
+ * Take linting results (from drafter.validate tool) and iterate over the
+ * warnings, either presenting or ignoring them according to .apiblint file.
+ *
+ * @param {Map<string, Array<Object>>} ignores - Parsed representation of the
+ *		.apiblint ignore file
+ * @param {number} fuzzFactor - How many lines ± to fuzzy match ignore blocks
+ * @param {Object} warning - A result from drafter.validate tool
+ * @param {Object} posInfo - Describes the code-span referenced by the warning
+ * @param {string} context - Lines of the code-span referenced by the warning
+ * @returns {boolean} whether to ignore this warning
+ */
 function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
 	let ignoreBlocks = ignores.get(warning.content);
 	if (!ignoreBlocks) {
@@ -121,13 +131,46 @@ function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
 	});
 }
 
+/**
+ * Parse an .apiblint ignore file returning details of warnings to be ignored.
+ *
+ * @param {Object} warning - A result from drafter.validate tool
+ * @returns {Object<string, number>} Start and end line/char positions describing
+ *		the code-span highlighted by the warning
+ */
+ function getPosInfo(warning) {
+		let sourcePositions = warning.attributes.sourceMap.content[0].content;
+		let first = sourcePositions[0];
+		let last = sourcePositions.slice(-1)[0];
+		// sourcePosition objects contain a pair of values, so content[0]
+		// is the start info and content[1] is the end info of a pos.
+		// For some reason each sourcePosition selects a single line only
+		// so there are multiple sourcePosition objects per warning 🤷‍♂️
+		return {
+			startLine: first.content[0].attributes.line.content - 1,
+			startChar: first.content[0].attributes.column.content - 1,
+			endLine: last.content[1].attributes.line.content - 1,
+			endChar: last.content[1].attributes.column.content - 1,
+		}
+}
+
+/**
+ * Take linting results (from drafter.validate tool) and iterate over the
+ * warnings, either presenting or ignoring them according to .apiblint file.
+ *
+ * @param {Object} options - Config values for use in downstream methods
+ * @param {Array<string>} lines - The .apib source file as array of lines
+ * @param {Array<Object>} warnings - Results from drafter.validate tool
+ * @param {string} filename - Path to the .apib file being linted
+ * @returns {number} An 'exitCode' value representing success or failure
+ */
 async function processWarnings(options, lines, warnings, filename) {
 	console.log(chalk.red.bold(warnings.length + " linting issues found"));
 
 	let ignoreFileName = filename + options.ignoreFileExt;
 	console.log(
 		'To ignore any of these instances, copy and paste the section (including ' +
-		'separators) to the ignore file: ' + chalk.bold(ignoreFileName)
+		'separators) to an ignore file at: ' + chalk.bold(ignoreFileName)
 	)
 	let ignoreFile = await fs.readFile(ignoreFileName, 'utf8').catch(err => {});
 	let ignores = parseIgnoreFile(ignoreFile);
@@ -136,7 +179,7 @@ async function processWarnings(options, lines, warnings, filename) {
 	let shouldIgnore_ = partial(shouldIgnore, ignores, options.fuzzFactor);
 	let exitCode = 0;
 
-	warnings.slice(0, 3).forEach((warning, warningIndex) => {
+	warnings.forEach(warning => {
 		console.log(SEPARATOR);
 		console.log(chalk.red(warning.content));
 
@@ -161,6 +204,13 @@ async function processWarnings(options, lines, warnings, filename) {
 	return exitCode;
 }
 
+/**
+ * Lint a single blueprint file
+ *
+ * @param {Object} options - Config values for use in downstream methods
+ * @param {string} filename - Path to file to lint
+ * @returns {number} An 'exitCode' value representing success or failure
+ */
 export async function lintFile(options, filename) {
 	console.log(chalk.bold(filename));
 
