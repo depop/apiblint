@@ -8,6 +8,6 @@
  * @param {?} val - Will be cast to String, left-padded, and suffix appended
  * @returns {string} padded
  */
-export function lpad({padWith=' ', suffix=''} = {}, length, val) {
+export function lpad(val, length, {padWith=' ', suffix=''} = {}) {
 	return String(val).padStart(length, padWith) + suffix;
 }

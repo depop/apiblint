@@ -6,14 +6,14 @@ import {lint} from './linter'
  * @param {Array<string>} rawArgs - i.e. from `process.argv`
  * @returns {Object} parsed args
  */
-function parseArgs(rawArgs) {
+export function parseArgs(rawArgs) {
   return yargs
     .command('$0 <files...>', 'Lint a set of .apib files', (yargs) => {
       yargs
         .option('z', {
           alias: 'fuzzy-line-range',
           type: 'number',
-          default: 8,
+          default: 5,
           describe:
             `If you are using a <blueprint-file>.apiblint file to ignore ` +
             `specific warnings, line numbers from the ignore context can be ` +
@@ -30,7 +30,7 @@ function parseArgs(rawArgs) {
  * @param {Array<string>} args - from `parseArgs`
  * @returns {Object} an options object suitable for use with `lint`
  */
-function optionsFromArgs(args) {
+export function optionsFromArgs(args) {
   return {
     fuzzFactor: args.fuzzyLineRange,
     contextSize: 2,
