@@ -1,5 +1,7 @@
-import yargs from 'yargs'
-import {lint} from './linter'
+import chalk from 'chalk';
+import yargs from 'yargs';
+
+import {lint} from './linter';
 
 
 /**
@@ -10,8 +12,8 @@ export function parseArgs(rawArgs) {
   return yargs
     .command('$0 <files...>', 'Lint a set of .apib files', (yargs) => {
       yargs
-        .option('z', {
-          alias: 'fuzzy-line-range',
+        .option('fuzzy-line-range', {
+          alias: 'z',
           type: 'number',
           default: 5,
           describe:
@@ -19,6 +21,24 @@ export function parseArgs(rawArgs) {
             `specific warnings, line numbers from the ignore context can be ` +
             `fuzzy matched within a certain range (to cope with small edits ` +
             `to the blueprint that would otherwise invalidate the ignore file)`
+        })
+        .option('no-color', {
+          alias: 'n',
+          type: 'boolean',
+          default: undefined,  // default: false triggers cnflict warning by yargs
+          describe:
+            `Monochrome output only`
+        })
+        .option('force-color', {
+          alias: 'c',
+          type: 'boolean',
+          default: undefined,  // default: false triggers cnflict warning by yargs
+          conflicts: 'no-color',
+          describe:
+            `When running as a pre-commit hook we are unable to detect if the ` +
+            `terminal supports colored output. If you want to see colored ` +
+            `output then set this flag for apiblint in your ` +
+            `.pre-commit-config.yaml`
         });
     })
    	.help()
@@ -35,6 +55,7 @@ export function optionsFromArgs(args) {
     fuzzFactor: args.fuzzyLineRange,
     contextSize: 2,
     ignoreFileExt: '.apiblint',
+    color: (args.noColor ? false : (args.forceColor ? true : null)),
     drafterOpts: {
       requireBlueprintName: true,
     },
@@ -50,6 +71,12 @@ export function optionsFromArgs(args) {
 export async function cli(rawArgs) {
   let args = parseArgs(rawArgs);
   let options = optionsFromArgs(args);
+
+  // true: force color, false: no color, null: auto
+  if (options.color !== null) {
+    chalk.level = options.color ? 3 : 0;
+  }
+
   let exitCodes = await lint(args.files, options);
   process.exit(Math.max(...exitCodes));
 }
