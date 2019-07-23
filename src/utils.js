@@ -9,5 +9,5 @@
  * @returns {string} padded
  */
 export function lpad(val, length, {padWith=' ', suffix=''} = {}) {
-	return String(val).padStart(length, padWith) + suffix;
+  return String(val).padStart(length, padWith) + suffix;
 }
