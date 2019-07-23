@@ -51,17 +51,31 @@ describe('cli', function() {
 			    fuzzFactor: 8,
 			    contextSize: 2,
 			    ignoreFileExt: '.apiblint',
+			    color: null,
 			    drafterOpts: {
 			      requireBlueprintName: true,
 			    },
 			  }
 			},
 	    {
-	    	args: {fuzzyLineRange: 7},
+	    	args: {fuzzyLineRange: 7, forceColor: true},
 		    expected: {
 			    fuzzFactor: 7,
 			    contextSize: 2,
 			    ignoreFileExt: '.apiblint',
+			    color: true,
+			    drafterOpts: {
+			      requireBlueprintName: true,
+			    },
+			  }
+			},
+	    {
+	    	args: {fuzzyLineRange: 7, noColor: true},
+		    expected: {
+			    fuzzFactor: 7,
+			    contextSize: 2,
+			    ignoreFileExt: '.apiblint',
+			    color: false,
 			    drafterOpts: {
 			      requireBlueprintName: true,
 			    },
