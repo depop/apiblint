@@ -2,7 +2,7 @@
     name: apiblint
     description: Runs apiary/drafter.js validation on your .apib files
     entry: apiblint
-    language: python
+    language: node
     types: [file, non-executable, text]
     files: ^*.apib$
     pass_filenames: true
