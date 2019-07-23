@@ -41,8 +41,8 @@ export function parseArgs(rawArgs) {
             `.pre-commit-config.yaml`
         });
     })
-   	.help()
-  	.parse(rawArgs.slice(2))
+    .help()
+    .parse(rawArgs.slice(2))
   ;
 }
 
