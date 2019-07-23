@@ -1,94 +1,95 @@
-import {promises as fs} from 'fs'
+import { promises as fs } from 'fs'
 import util from 'util';
 
 import chalk from 'chalk';
 import drafter from 'drafter';
 import escapeStringRegexp from 'escape-string-regexp';
 import partial from 'lodash.partial';
+import partialRight from 'lodash.partialright';
 import unzip from 'lodash.unzip';
-import stripAnsi from 'strip-ansi';
+import * as log from 'loglevel';
 import range from 'python-range';
 
-import {lpad} from './utils';
+import { lpad } from './utils';
+
 
 const validateBlueprint = util.promisify(drafter.validate)
 
 
-const IGNORE_PATTERN = /(\s*\d+)\: ?(.*)/
-const LINE_NO_SEP = ': '
+// exports for purpose of test mocking:
+export { validateBlueprint };
+export { promises as fs } from 'fs';
+export * as log from 'loglevel';
+
+
+log.setLevel("info");
+
+
+const LINE_NO_SEP = '| ';
 const NEWLINE = /\r\n|\r|\n/;
-const SEPARATOR = "-----------";
+const WARNING_CODE_PREFIX = 'W';
+const WARNING_CODE_SEP = ':';
+const SEPARATOR = "";
 
 
 /**
  * Parse an .apiblint ignore file returning details of warnings to be ignored.
  *
- * @param {string} ignoreFile - Path to an .apiblint ignore file
+ * @param {string} ignoreFile - Content of an .apiblint ignore file
  * @returns {Map<string, Array<Object>>} Parsed representation of ignore file
+ *		an map of arrays of position objects keyed by prefixed warning code
  */
-function parseIgnoreFile(ignoreFile) {
-	if (!ignoreFile) {
-		return [];
-	};
-	let rawBlocks = ignoreFile.split(SEPARATOR).filter(line => Boolean(line.replace(NEWLINE, '')));
+export function parseIgnoreFile(ignoreFile) {
 	let ignores = new Map();
-	rawBlocks.forEach(block => {
-		let [head, ...lines] = block.split(NEWLINE).filter(line => Boolean(line));
-		head in ignores || ignores.set(head, []);
-		let linesInfo = lines.map(line => {
-			line = escapeStringRegexp(line);
-			let lineNo = null;
-			let match = line.match(IGNORE_PATTERN);
-			if (match) {
-				line = `\\s*(\\d+)${LINE_NO_SEP}${match[2]}`;
-				lineNo = parseInt(match[1]);
-			} // else throw?
-			return [line, lineNo];
+	if (ignoreFile) {
+		let lines = ignoreFile.split(NEWLINE).filter(line => Boolean(line));
+		lines.forEach(line => {
+			let [code, startLine, endLine] = line.split(":");
+			ignores.has(code) || ignores.set(code, []);
+			ignores.get(code).push({
+				startLine: parseInt(startLine),
+				endLine: parseInt(endLine),
+			});
 		});
-		let [patternLines, lineNos] = unzip(linesInfo);
-		ignores.get(head).push({
-			head: head,
-			pattern: new RegExp(patternLines.join('\n'), 'm'),
-			lineNos: lineNos,
-		});
-	});
+	};
 	return ignores;
 }
 
 /**
- * Take linting results (from drafter.validate tool) and iterate over the
- * warnings, either presenting or ignoring them according to .apiblint file.
+ * Take description of code-span for a particular warning and output the
+ * affected lines with context. Used both for display to console and as a
+ * for comparing with ignore file.
  *
  * @param {Array<string>} lines - The .apib source file as array of lines
  * @param {number} contextSize - How many lines ± of context to display around
  *		the lines highlighted by the warning code-span
- * @param {Object} posInfo - Describes the code-span referenced by the warning
+ * @param {Object} warning - Parsed warning object from `parseWarning`
  * @returns {string} The formatted warning details
  */
- function formatWarning(lines, contextSize, posInfo) {
+export function formatWarning(lines, contextSize, warning) {
 	let formatted = [];
-	let formatLineNo = partial(lpad, {suffix: LINE_NO_SEP}, String(lines.length).length);
+	let formatLineNo = partialRight(lpad, String(lines.length).length, {suffix: LINE_NO_SEP});
 	for (let i of range(
-		Math.max(0, posInfo.startLine - contextSize),
-		Math.min(lines.length, posInfo.endLine + contextSize + 1)
+		Math.max(0, warning.startLine - contextSize),
+		Math.min(lines.length, warning.endLine + contextSize + 1)
 	)) {
 		let line = lines[i];
-		if (i == posInfo.startLine) {
+		if (i == warning.startLine) {
 			// first highlighted line
-			let pre = line.slice(0, posInfo.startChar);
-			let post = line.slice(posInfo.startChar);
+			let pre = line.slice(0, warning.startChar);
+			let post = line.slice(warning.startChar);
 			formatted.push(
 				chalk.yellow(formatLineNo(i)) + chalk.gray(pre) + post
 			);
-		} else if (i > posInfo.startLine && i < posInfo.endLine) {
+		} else if (i > warning.startLine && i < warning.endLine) {
 			// fully highlighted line
 			formatted.push(
 				chalk.yellow(formatLineNo(i)) + line
 			);
-		} else if (i == posInfo.endLine) {
+		} else if (i == warning.endLine) {
 			// last highlighted line
-			let pre = line.slice(0, posInfo.endChar);
-			let post = line.slice(posInfo.endChar);
+			let pre = line.slice(0, warning.endChar);
+			let post = line.slice(warning.endChar);
 			formatted.push(
 				chalk.yellow(formatLineNo(i)) + pre + chalk.gray(post)
 			);
@@ -103,43 +104,66 @@ function parseIgnoreFile(ignoreFile) {
 }
 
 /**
+ * Take description of code-span for a particular warning and output the
+ * affected lines with context. Used both for display to console and as a
+ * for comparing with ignore file.
+ *
+ * @param {Array<string>} lines - The .apib source file as array of lines
+ * @param {number} contextSize - How many lines ± of context to display around
+ *		the lines highlighted by the warning code-span
+ * @param {Object} warning - Parsed warning object from `parseWarning`
+ * @returns {string} The formatted warning details
+ */
+export function formatWarningHeader(warning) {
+	return [
+		chalk.red(warning.description),
+		chalk.blueBright(
+			warning.code + WARNING_CODE_SEP +
+			warning.startLine + WARNING_CODE_SEP +
+			warning.endLine
+		)
+	];
+}
+
+/**
  * Take linting results (from drafter.validate tool) and iterate over the
  * warnings, either presenting or ignoring them according to .apiblint file.
  *
  * @param {Map<string, Array<Object>>} ignores - Parsed representation of the
  *		.apiblint ignore file
  * @param {number} fuzzFactor - How many lines ± to fuzzy match ignore blocks
- * @param {Object} warning - A result from drafter.validate tool
- * @param {Object} posInfo - Describes the code-span referenced by the warning
- * @param {string} context - Lines of the code-span referenced by the warning
+ * @param {Object} warning - Parsed warning object from `parseWarning`
  * @returns {boolean} whether to ignore this warning
  */
-function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
-	let ignoreBlocks = ignores.get(warning.content);
-	if (!ignoreBlocks) {
+export function shouldIgnore(ignores, fuzzFactor, warning) {
+	let ignorePositions = ignores.get(warning.code);
+	if (!ignorePositions) {
 		return false;
 	}
-	return ignoreBlocks.some(block => {
-		if (context.match(block.pattern)) {
-			return range(
-				block.lineNos[0] - fuzzFactor,
-				block.lineNos[0] + fuzzFactor
-			).includes(posInfo.startLine);
-		} else {
-			return false;
-		}
+	return ignorePositions.some(pos => {
+		return (
+			range(
+				pos.startLine - fuzzFactor,
+				pos.startLine + fuzzFactor + 1
+			).includes(warning.startLine)
+			&&
+			range(
+				pos.endLine - fuzzFactor,
+				pos.endLine + fuzzFactor + 1
+			).includes(warning.endLine)
+		);
 	});
 }
 
 /**
- * Parse an .apiblint ignore file returning details of warnings to be ignored.
+ * Extract useful information from the warning object from drafter parseResult.
  *
  * @param {Object} warning - A result from drafter.validate tool
- * @returns {Object<string, number>} Start and end line/char positions describing
+ * @returns {Object} Start and end line/char positions describing
  *		the code-span highlighted by the warning
  */
- function getPosInfo(warning) {
-		let sourcePositions = warning.attributes.sourceMap.content[0].content;
+export function parseWarning(rawWarning) {
+		let sourcePositions = rawWarning.attributes.sourceMap.content[0].content;
 		let first = sourcePositions[0];
 		let last = sourcePositions.slice(-1)[0];
 		// sourcePosition objects contain a pair of values, so content[0]
@@ -147,6 +171,8 @@ function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
 		// For some reason each sourcePosition selects a single line only
 		// so there are multiple sourcePosition objects per warning 🤷‍♂️
 		return {
+			code: WARNING_CODE_PREFIX + rawWarning.attributes.code.content,
+			description: rawWarning.content,
 			startLine: first.content[0].attributes.line.content - 1,
 			startChar: first.content[0].attributes.column.content - 1,
 			endLine: last.content[1].attributes.line.content - 1,
@@ -160,47 +186,49 @@ function shouldIgnore(ignores, fuzzFactor, warning, posInfo, context) {
  *
  * @param {Object} options - Config values for use in downstream methods
  * @param {Array<string>} lines - The .apib source file as array of lines
- * @param {Array<Object>} warnings - Results from drafter.validate tool
+ * @param {Array<Object>} rawWarnings - Results from drafter.validate tool
  * @param {string} filename - Path to the .apib file being linted
  * @returns {number} An 'exitCode' value representing success or failure
  */
-async function processWarnings(options, lines, warnings, filename) {
-	console.log(chalk.red.bold(warnings.length + " linting issues found"));
+export async function processWarnings(options, lines, rawWarnings, filename) {
+	log.info(chalk.red.bold(rawWarnings.length + " linting issues found"));
 
 	let ignoreFileName = filename + options.ignoreFileExt;
-	console.log(
-		'To ignore any of these instances, copy and paste the section (including ' +
-		'separators) to an ignore file at: ' + chalk.bold(ignoreFileName)
+	log.info(
+		'To ignore any of these instances, copy and paste the blue\n' +
+		'<code>:<startLine>:<endLine> error position specifier\n' +
+		'into an ignore file at: ' + chalk.bold(ignoreFileName)
 	)
 	let ignoreFile = await fs.readFile(ignoreFileName, 'utf8').catch(err => {});
 	let ignores = parseIgnoreFile(ignoreFile);
 
 	let formatWarning_ = partial(formatWarning, lines, options.contextSize);
 	let shouldIgnore_ = partial(shouldIgnore, ignores, options.fuzzFactor);
+
 	let exitCode = 0;
+	rawWarnings.forEach(rawWarning => {
+		log.info(SEPARATOR);
 
-	warnings.forEach(warning => {
-		console.log(SEPARATOR);
-		console.log(chalk.red(warning.content));
+		// use module.exports so it can be mocked in tests :facepalm:
+		let warning = module.exports.parseWarning(rawWarning);
 
-		let posInfo = getPosInfo(warning);
-		let formatted = formatWarning_(posInfo)
-		let context = stripAnsi(formatted.join('\n'));
+		let headers = formatWarningHeader(warning);
+		headers.forEach(line => {
+			log.info(line);
+		});
 
-		if (shouldIgnore_(warning, posInfo, context)) {
-			console.log(chalk.blueBright(
-				'on lines ' + chalk.bold(`[${posInfo.startLine}...${posInfo.endLine}]`) +
-				' ignored by ' + chalk.bold(ignoreFileName)
-			));
-			return; // continue
+		if (shouldIgnore_(warning)) {
+			log.info(chalk.yellow('ignored by .apiblint file'));
+			return; // continue forEach
 		}
+		// not ignored
 		exitCode = 1;
 
-		formatted.forEach(line => {
-			console.log(line);
+		formatWarning_(warning).forEach(line => {
+			log.info(line);
 		});
 	})
-	console.log(SEPARATOR);
+	log.info(SEPARATOR);
 	return exitCode;
 }
 
@@ -212,14 +240,14 @@ async function processWarnings(options, lines, warnings, filename) {
  * @returns {number} An 'exitCode' value representing success or failure
  */
 export async function lintFile(options, filename) {
-	console.log(chalk.bold(filename));
+	log.info(chalk.bold(filename));
 
 	let blueprint = await fs.readFile(filename, 'utf8');
 	let warnings = await validateBlueprint(blueprint, options.drafterOpts).catch(err => {
 		// 🤔 I'm not sure how to cause an 'error'
 		// (passing a non-apib file still gives a parseResult)
-		console.log(chalk.red.bold("Error:"), err);
-		process.exit(2);
+		log.info(chalk.red.bold("Error:"), err);
+		return 2;
   });
 
   let exitCode = 0;
@@ -231,12 +259,12 @@ export async function lintFile(options, filename) {
 			exitCode = await processWarnings(options, lines, warnings.content, filename);
 		} else {
 			// "should not happen"
-  		console.log(chalk.red.bold("Error: unrecognised linter result"), warnings);
+  		log.info(chalk.red.bold("Error: unrecognised linter result"), warnings);
   		exitCode = 3;
 		}
 	} else {
 		// 🎉
-		console.log(chalk.green('OK'));
+		log.info(chalk.green('OK'));
 	};
 	return exitCode;
 }

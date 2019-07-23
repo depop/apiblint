@@ -1,0 +1,567 @@
+FORMAT: 1A
+HOST: https://stage-interim-chat-api.depop.com/
+
+# Chat API V2
+
+Chat API allows clients to create chat direct conversations between 2 users with an optional product.
+Enables user to view their list of group subscriptions, post messages to groups and request messages for groups they are subscribed to.
+
+
+
+## Group Subscriptions
+
+A subscription is a relationship between a user and a chat group.
+Stores user specific properties associated with a group.
+
+### Unsubscribe [/api/v2/chat/subscriptions{?group_id}]
+
+#### Unsubscribe [DELETE]
+
++ Request
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + group_id: groupId (string, required)
+
++ Response 204
+
+### Mark Read [/api/v2/chat/subscriptions/markread]
+
+#### Marks one subscription as read [PATCH]
+
+Removes unread timestamp, sets last message timestamp to now, sets unread count to 0
+
++ Request (application/json)
+    + Attributes (UnreadRequest, required)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 200 (application/json)
+    + Attributes (Subscription, required)
+
++ Response 400 (text/plain)
+    Not subscribed to group
+
+### Batch Mark Read [/api/v2/chat/subscriptions/batchmarkread]
+
+#### Marks a batch of subscriptions as read [PATCH]
+
+Returns a json containing:
+- "succeeded": an array of the subscriptions that were marked successfully
+- "failed": a json object which maps subscription-id to reason of failure
+
++ Request (application/json)
+    + Attributes (MarkBatchedRequest, required)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 202 (application/json)
+    + Attributes (ReadBatchMarkResult, required)
+
++ Response 400 (text/plain)
+    Too many conversations to mark as unread, max is ...
+
+### Mark Unread [/api/v2/chat/subscriptions/markunread]
+
+#### Marks one subscription as unread [PATCH]
+
+Sets unread timestamp to now, sets unread count to 1
+
++ Request (application/json)
+    + Attributes (UnreadRequest, required)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 200 (application/json)
+    + Attributes (UnreadSubscription, required)
+
++ Response 400 (text/plain)
+    Not subscribed to group
+
+### Batch Mark Unread [/api/v2/chat/subscriptions/batchmarkunread]
+
+#### Marks a batch of subscriptions as unread [PATCH]
+
+Returns a json containing:
+- "succeeded": an array of the subscriptions that were marked successfully
+- "failed": a json object which maps subscription-id to reason of failure
+
++ Request (application/json)
+    + Attributes (MarkBatchedRequest, required)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 202 (application/json)
+    + Attributes (UnreadBatchMarkResult, required)
+
++ Response 400 (text/plain)
+    Too many conversations to mark as unread, max is ...
+
+### Hide [/api/v2/chat/subscriptions/hide]
+
+#### Hide subscription from users [PATCH]
+
++ Request (application/json)
+    + Attributes (UnreadRequest, required)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 204
+
+
+### Paginated subscriptions [/api/v2/chat/subscriptions{?limit, before, after}]
+
+#### Paginated subscriptions [GET]
+
+The order of the "users" array inside every conversation is not guaranteed and should be treated as a set.
+
++ Request
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + limit: 20 (number, optional)
+    + before: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+    + after: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+    + unreadOnly: (boolean, optional)
+
++ Response 200 (application/json)
+    + Attributes (PaginatedSubscriptions, required)
+
+### Global unread message counter [/api/v2/chat/subscriptions/unreadcount]
+
+#### Paginated subscriptions [GET]
+
++ Request
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Response 200 (application/json)
+    + Attributes (number, required)
+
+
+
+## Group Groups
+
+A group is an entity which messages are posted against, and users can subscribe to.
+
+### Create Group [/api/v2/chat/groups]
+
+#### Create a chat group between two users and an optional product [PUT]
+
+The creation PUT methods are idempotent. If the group already exists for the users and product it will not be recreated.
+
++ Request (application/json)
+    + Headers
+        Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+    + Attributes (ProductGroupCreation, required)
+
++ Response 201 (application/json)
+    + Attributes (Group, required)
+
+### Get group [/api/v2/chat/groups/{group_id}]
+
+#### Get Group [GET]
+
++ Request
+    + Headers
+        Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + group_id: groupId (string, required)
+
+
++ Response 200 (application/json)
+    + Attributes (Group, required)
+
+### Get Aggregated info [/api/v2/chat/aggregated-group{?user_id,product_id}]
+
+#### Get Aggregated Group info [GET]
+
++ Request
+    + Headers
+        Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + user_id (number, required)
+    + product_id (number, required)
+
+
++ Response 200 (application/json)
+    + Attributes (GroupAggregateResponse, required)
+
+### Get Group by user and product [/api/v2/chat/group{?user_id,product_id}]
+
+#### Get Group info [GET]
+
++ Request
+    + Headers
+        Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + user_id (number, required)
+    + product_id (number, optional)
+
+
++ Response 200 (application/json)
+    + Attributes (Group, required)
+
+### List users [/api/v2/chat/groups/{group_id}/users{?limit,before,after}]
+
+#### List users subscribed to group [GET]
+
++ Request
+    + Headers
+        Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + group_id: groupId (string, required)
+    + limit: 20 (number, optional)
+    + before: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+    + after: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+
++ Response 200 (application/json)
+    + Attributes (PaginatedUserIds, required)
+
+
+
+
+
+
+## Group Messages
+
+Messages are posted to groups by users. They can contain text and attachments.
+
+### Post message [/api/v2/chat/messages]
+
+#### Post message [POST]
+
++ Request (application/json)
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+    + Attributes (MessageCreationRequest, required)
+
++ Response 201 (application/json)
+    + Attributes (Message, required)
+
+
+### Paginated Messages [/api/v2/chat/messages{?group_id, limit, before, after}]
+
+#### Get messages paginated [GET]
+
++ Request
+    + Headers
+            Authorization: Bearer 37416d87d8cac045e559fd9efb7441e5eda68db2
+
++ Parameters
+    + group_id: groupId (string, required)
+    + limit: 20 (number, optional)
+    + before: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+    + after: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
+
++ Response 200 (application/json)
+    + Attributes (PaginatedMessages, required)
+
+
+### Moderation Only - Historical Messages sent by [/api/v2/chat/moderation/users/{sender}/historical-messages{?time_from,time_to,recipient,product_id,after}]
+
+#### Messages sent by [GET]
+
+Returns all the messages sent by a user for a certain time window, paginated.
+
+Messages in the response are guaranteed to be the ones sent by the users up to 1hour prior to the request to this endpoint.
+
+Can also be filtered by recipient and/or product.
+
+Accepts user ids for sender and recipient.
+
+Accepts ISO 8601 dates with UTC time zone for time window, to an hour precision.
+
+Maximum range for the time window is 1month.
+
+To get the after page pass the "after" parameter, set to the "last" token returned by the previous request.
+
++ Parameters
+    + time_from: `2016-08-02T00:00:00.000Z` (string, required) - Start Date time inclusive, following ISO 8601
+    + time_to:   `2016-09-02T00:00:00.000Z` (string, required) - End Date time inclusive, following ISO 8601
+    + recipient: 54734 (number, optional)
+    + product_id: 593409 (number, optional)
+    + after: MXwzfDE5Nz (string, optional)
+
++ Request
+    + Headers
+            Authorization: Bearer 4g37jfo2-83j2-5793-3j3a-1920fjei2918
+
++ Response 200 (application/json)
+    + Attributes (PaginateModerationdMessages, required)
+
+
+### DEPRECATED - Moderation Only - Messages sent by [/api/v2/chat/moderation/users/{sender}/messages{?time_from,time_to,recipient,product_id,after}]
+
+#### Messages sent by [GET]
+
+Returns all the messages sent by a user for a certain time window, paginated.
+
+Can also be filtered by recipient and/or product.
+
+Accepts user ids for sender and recipient.
+
+Accepts ISO 8601 dates for time window, to an hour precision.
+
+Maximum range for the time window is 1month.
+
+To get the after page pass the "after" parameter, set to the "last" token returned by the previous request.
+
++ Parameters
+    + time_from: `2016-08-02T00:00:00.000Z` (string, required) - Start Date time inclusive, following ISO 8601
+    + time_to:   `2016-09-02T00:00:00.000Z` (string, required) - End Date time inclusive, following ISO 8601
+    + recipient: 54734 (number, optional)
+    + product_id: 593409 (number, optional)
+    + after: MXwzfDE5Nz (string, optional)
+
++ Request
+    + Headers
+            Authorization: Bearer 4g37jfo2-83j2-5793-3j3a-1920fjei2918
+
++ Response 200 (application/json)
+    + Attributes (PaginateModerationdMessages, required)
+
+
+# Data Structures
+
+## LegacyPictureFormat
+
++ height: 123 (number, required)
++ width: 123 (number, required)
++ url: imageurl (string, required)
+
+## FormatMap
+
++ identifier (LegacyPictureFormat, required)
+
+## LegacyPicture
+
++ formats (FormatMap, required)
++ id: 321 (number, required)
+
+## LegacyProduct
+
++ id: 123 (number, required)
++ description: Description (string, required)
++ user_id: 123 (number, required)
++ pictures_data (array[LegacyPicture], optional)
++ purchase_via_paypal: true (boolean, required)
++ categories: 1 (array[number], required)
++ videos (array[Video], optional, nullable)
++ status (ProductStatus, required)
+
+## ProductStatus (enum)
++ S - On sale
++ O - Purchased
++ M - Sold
++ X - Deleted
++ x - Deleted
++ p - Deleted
++ m - Deleted
++ B - Banned
++ b - Banned
++ C - Banned
++ c - Banned
++ u - Should not happen, just in case treat as banned
+
+## ThumbnailFormat
++ formats
+    + *P0* (LegacyPictureFormat)
+    + *P1* (LegacyPictureFormat)
+    + *P2* (LegacyPictureFormat)
+    + *P3* (LegacyPictureFormat)
+    + *P4* (LegacyPictureFormat)
+    + *P5* (LegacyPictureFormat)
+    + *P6* (LegacyPictureFormat)
+    + *P7* (LegacyPictureFormat)
+    + *P8* (LegacyPictureFormat)
+
+## Video
+
++ id: `666afe30-133fef4c-5945-4b5f-a9bf-96feafaf3dbd` (string, required) - UUID based calculated id used during the upload
++ `video_url`: `https://dqm69yda827eo.cloudfront.net/video/processed/hls_666afe30-e86448c7-a238-4739-9323-c03a596342f6.m3u8` (string, required)
++ thumbnail (ThumbnailFormat, required)
+
+## LegacyUser
+
++ id: 123 (number, required)
++ first_name: bob (string, required)
++ last_name: bob (string, required)
++ username: bob (string, required)
++ picture_data (LegacyPicture, optional)
++ badge: verified (enum, optional)
+    + Members
+        + `verified`
+        + `staff`
+
+## GroupAggregateResponse
+
++ users (array[LegacyUser], required)
++ product (LegacyProduct, optional)
++ chat_group (Group, optional)
+
+## MessageCreationRequest
+
++ user_id: 12 (number, required) - The id of the recipient
++ product_id: 12 (number, optional) - The id of the product
++ text: Message text (string, required)
++ attachment (MessageAttachment, optional)
++ idempotency_key (string, optional) - unique id used for creating a message. Prevents message being created twice
+
+## UnreadRequest
+
++ group_id: 1751727ffb0ff733ef5fde5a1cb17402d975667ac1b366cf94cdbc7b4b8c63ee (string, required)
+
+## MarkBatchedRequest
+
++ group_ids: 1751727ffb0ff733ef5fde5a1cb17402d975667ac1b366cf94cdbc7b4b8c63ee, 863455ffb0ff733ef5fd534455jhg4g5475667ac1b366cf94cdbc564jjhg546f, 90897565gwe33ef5fde5a1cb17402d975667ac1bfdnsdjvlk4843453frgr3rg4 (array[string], required)
+
+## ProductGroupCreation
+
++ user_id: 123 (number, required)
++ product_id: 6547 (number, required)
+
+## Message
+
++ id (string, required)
++ user_id: 123 (number, required)
++ group_id: groupId (string, required) - The id of the group
++ text: Message text (string, required)
++ attachment (MessageAttachment, optional)
++ created_timestamp: 1497540057 (number, required) - Only set if migrating an old message
++ idempotency_key (string, optional) - unique id used for creating a message. Prevents message being created twice
+
+## MessageAttachment
+
++ uri (string, required)
++ media_type: 0 (number, required)
++ metadata: 1123 (string, optional)
+
+## GroupCreation
+
++ user_id: 123 (number, required)
++ topic: group topic (string, required)
++ group_type: 0 (number, required)
++ initial_users: 124, 435 (array[number], optional)
++ metadata (string, optional)
+
+## Group
+
++ id: groupId (string, required)
++ created_timestamp: 1497540057 (number, required)
++ topic: group topic (string, required)
++ group_type: 0 (number, required)
++ metadata (string, optional)
+
+## SubscriptionCreation
+
++ user_id: 123 (number, required) - The id of the user
++ group_id: groupId (string, required) - The id of the group
+
+## Subscription
+
++ user_id: 123 (number, required) - The id of the user
++ group_id: 1751727ffb0ff733ef5fde5a1cb17402d975667ac1b366cf94cdbc7b4b8c63ee (string, required) - The id of the group
++ group_updated_timestamp: 1497540057 (number, required) - Timestamp of subscription creation or last message posted to group
++ unread_count: 0 (number, required) - The number of unread messages for the user in the group
++ visible: true (boolean, required) - Whether or not the subscription is visible
++ last_read_timestamp: 1497540057 (number, required) - Timestamp for when the user last read the messages for the group
++ last_message_timestamp: 1497540057 (number, optional) - Timestamp of last message posted to the group
++ last_message_text: Last message text (string, optional) - Last message posted to the group
+
+## PaginatedUserIds
+
++ objects (array[PaginatedUserId], required)
++ page_info (PageInfo, required)
+
+## PaginatedUserId
+
++ object: 1234 (number, required)
++ cursor: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, required)
+
+## PaginatedMessages
+
++ objects (array[PaginatedMessage], required)
++ page_info (PageInfo, required)
+
+## PaginatedMessage
+
++ object (Message, required)
++ cursor: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, required)
+
+## PaginatedSubscriptions
+
++ objects (array[PaginatedSubscription], required)
++ page_info (PageInfo, required)
+
+## PaginatedSubscription
+
++ object (AggregatedSubscription, required)
++ cursor: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, required)
+
+## PageInfo
+
++ first: MXwxfDE5NzAtMDEtMDFUMDA6MDA6MDAuMTAwWg (string, optional)
++ last: MXwzfDE5NzAtMDEtMDFUMDA6MDA6MDAuMzAwWg (string, optional)
++ has_more: false (boolean, required)
+
+## AggregatedSubscription
+
++ users (array[LegacyUser], required)
++ product (LegacyProduct, optional)
++ chat_subscription (Subscription, required)
++ chat_group (Group, required)
+
+## UnreadSubscription
+
++ user_id: 123 (number, required) - The id of the user
++ group_id: 1751727ffb0ff733ef5fde5a1cb17402d975667ac1b366cf94cdbc7b4b8c63ee (string, required) - The id of the group
++ group_updated_timestamp: 1497540057 (number, required) - Timestamp of subscription creation or last message posted to group
++ unread_count: 1 (number, required) - The number of unread messages for the user in the group
++ visible: true (boolean, required) - Whether or not the subscription is visible
++ last_read_timestamp: 1497540057 (number, required) - Timestamp for when the user last read the messages for the group
++ last_message_timestamp: 1497540057 (number, optional) - Timestamp of last message posted to the group
++ unread_timestamp: 1497540057 (number, optional) - Timestamp of last message received in the conversation, present only when user still have to read messages for the conversation
++ last_message_text: Last message text (string, optional) - Last message posted to the group
+
+## ReadBatchMarkResult
+
++ succeeded: (array[Subscription])
++ failed: (BatchMarkFailure)
+
+## UnreadBatchMarkResult
+
++ succeeded: (array[UnreadSubscription])
++ failed: (BatchMarkFailure)
+
+## BatchMarkFailure
+
++ 863455ffb0ff733ef5fd534455jhg4g5475667ac1b366cf94cdbc564jjhg546f:
+    + status: 400 (number, required)
+    + reason: Not subscribed to group (string, required)
++ 90897565gwe33ef5fde5a1cb17402d975667ac1bfdnsdjvlk4843453frgr3rg4:
+    + status: 500 (number, required)
+    + reason: Unhandled error (string, required)
+
+## ModerationMessage
+
++ sender: joe (string, required)
++ text: Hi there, how is it going? (string, required)
++ created: `2016-08-02T00:00:00Z` (string, required)
++ recipients: jack, john (array[string], required)
++ product_id: 54122 (number, optional)
+
+## ModerationMessagesPageInfo
+
++ last: MXwzfDE5Nz (string, optional)
++ has_more: true (boolean, required)
+
+## PaginateModerationdMessages
++ objects (array[ModerationMessage], required)
++ page_info (ModerationMessagesPageInfo, required)
