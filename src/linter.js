@@ -22,9 +22,6 @@ export { promises as fs } from 'fs';
 export * as log from 'loglevel';
 
 
-log.setLevel("info");
-
-
 const LINE_NO_SEP = '| ';
 const NEWLINE = /\r\n|\r|\n/;
 const WARNING_CODE_PREFIX = 'W';

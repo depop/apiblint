@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+import * as log from 'loglevel';
 import yargs from 'yargs';
 
 import {lint} from './linter';
@@ -21,6 +22,13 @@ export function parseArgs(rawArgs) {
             `specific warnings, line numbers from the ignore context can be ` +
             `fuzzy matched within a certain range (to cope with small edits ` +
             `to the blueprint that would otherwise invalidate the ignore file)`
+        })
+        .option('log-level', {
+          alias: 'l',
+          type: 'string',
+          coerce: val => val.toLowerCase(),
+          choices: ['silent', 'trace', 'debug', 'info', 'warn', 'error'],
+          default: 'info',
         })
         .option('no-color', {
           alias: 'n',
@@ -72,11 +80,15 @@ export async function cli(rawArgs) {
   let args = parseArgs(rawArgs);
   let options = optionsFromArgs(args);
 
+  log.setLevel(args.logLevel);
+
   // true: force color, false: no color, null: auto
   if (options.color !== null) {
     chalk.level = options.color ? 3 : 0;
   }
   // TODO: no-color output needs some ascii-art to replace highlighting
+
+  log.debug(options);
 
   let exitCodes = await lint(args.files, options);
   process.exit(Math.max(...exitCodes));
