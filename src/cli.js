@@ -85,6 +85,7 @@ export async function cli(rawArgs) {
   // true: force color, false: no color, null: auto
   if (options.color !== null) {
     chalk.level = options.color ? 3 : 0;
+    chalk.enabled = chalk.level > 0;
   }
   // TODO: no-color output needs some ascii-art to replace highlighting
 

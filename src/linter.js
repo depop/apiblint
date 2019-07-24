@@ -22,8 +22,10 @@ export { promises as fs } from 'fs';
 export * as log from 'loglevel';
 
 
-const LINE_NO_SEP = '| ';
 const NEWLINE = /\r\n|\r|\n/;
+const LINE_NO_SEP = '| ';
+const LINE_HIGHLIGHT = '*';
+const LINE_CONTEXTPAD = ' '.repeat(LINE_HIGHLIGHT.length);
 const WARNING_CODE_PREFIX = 'W';
 const WARNING_CODE_SEP = ':';
 const SEPARATOR = "";
@@ -76,24 +78,24 @@ export function formatWarning(lines, contextSize, warning) {
       let pre = line.slice(0, warning.startChar);
       let post = line.slice(warning.startChar);
       formatted.push(
-        chalk.yellow(formatLineNo(i)) + chalk.gray(pre) + post
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + chalk.gray(pre) + post
       );
     } else if (i > warning.startLine && i < warning.endLine) {
       // fully highlighted line
       formatted.push(
-        chalk.yellow(formatLineNo(i)) + line
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + line
       );
     } else if (i == warning.endLine) {
       // last highlighted line
       let pre = line.slice(0, warning.endChar);
       let post = line.slice(warning.endChar);
       formatted.push(
-        chalk.yellow(formatLineNo(i)) + pre + chalk.gray(post)
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + pre + chalk.gray(post)
       );
     } else {
       // pre/post 'context' lines
       formatted.push(
-        chalk.yellow.dim(formatLineNo(i)) + chalk.gray(line)
+        LINE_CONTEXTPAD + chalk.yellow.dim(formatLineNo(i)) + chalk.gray(line)
       );
     }
   };
@@ -237,6 +239,7 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
  * @returns {number} An 'exitCode' value representing success or failure
  */
 export async function lintFile(options, filename) {
+  log.debug('chalk.level:', chalk.level, 'chalk.enabled:', chalk.enabled);
   log.info(chalk.bold(filename));
 
   let blueprint = await fs.readFile(filename, 'utf8');
