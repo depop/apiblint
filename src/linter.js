@@ -29,7 +29,7 @@ const LINE_CONTEXTPAD = ' '.repeat(LINE_HIGHLIGHT.length);
 const WARNING_CODE_PREFIX = 'W';
 const WARNING_CODE_SEP = ':';
 const WARNING_SEPARATOR = "";
-const DOC_SEPARATOR = "\n---------\n";
+const DOC_SEPARATOR = "\n----------\n";
 
 
 /**
@@ -130,13 +130,19 @@ export function formatWarningHeader(warning) {
  * Take linting results (from drafter.validate tool) and iterate over the
  * warnings, either presenting or ignoring them according to .apiblint file.
  *
+ * @param {Object} options - Config values
  * @param {Map<string, Array<Object>>} ignores - Parsed representation of the
  *    .apiblint ignore file
  * @param {number} fuzzFactor - How many lines ± to fuzzy match ignore blocks
  * @param {Object} warning - Parsed warning object from `parseWarning`
  * @returns {boolean} whether to ignore this warning
  */
-export function shouldIgnore(ignores, fuzzFactor, warning) {
+export function shouldIgnore(options, ignores, fuzzFactor, warning) {
+  // global ignore:
+  if (options.ignoreCodes && options.ignoreCodes.includes(warning.code)) {
+    return true;
+  }
+  // ignores by line no:
   let ignorePositions = ignores.get(warning.code);
   if (!ignorePositions) {
     return false;
@@ -204,7 +210,7 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
   let ignores = parseIgnoreFile(ignoreFile);
 
   let formatWarning_ = partial(formatWarning, lines, options.contextSize);
-  let shouldIgnore_ = partial(shouldIgnore, ignores, options.fuzzFactor);
+  let shouldIgnore_ = partial(shouldIgnore, options, ignores, options.fuzzFactor);
 
   let exitCode = 0;
   rawWarnings.forEach(rawWarning => {
@@ -219,7 +225,7 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
     });
 
     if (shouldIgnore_(warning)) {
-      log.info(chalk.yellow('ignored by .apiblint file'));
+      log.info(chalk.yellow('(ignored)'));
       return; // continue forEach
     }
     // not ignored

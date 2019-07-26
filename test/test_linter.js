@@ -134,6 +134,7 @@ W10:72:74
     [
       {
         _meta: "exact match",
+        options: {},
         ignores: new Map([
           ['W10', [{startLine: 36, endLine: 37}]],
         ]),
@@ -150,6 +151,7 @@ W10:72:74
       },
       {
         _meta: "matched within fuzzFactor range",
+        options: {},
         ignores: new Map([
           ['W10', [{startLine: 33, endLine: 34}]],
         ]),
@@ -166,6 +168,7 @@ W10:72:74
       },
       {
         _meta: "ignore code would match but positions are outside fuzzFactor range",
+        options: {},
         ignores: new Map([
           ['W10', [{startLine: 30, endLine: 31}]],
         ]),
@@ -180,9 +183,31 @@ W10:72:74
         },
         expected: false
       },
+      {
+        _meta: "warning code globally ignored",
+        options: {
+          ignoreCodes: ["W10"]
+        },
+        ignores: new Map(),
+        fuzzFactor: 0,
+        warning: {
+          code: "W10",
+          description: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs",
+          startLine: 36,
+          startChar: 6,
+          endLine: 37,
+          endChar: 74,
+        },
+        expected: true
+      },
     ].forEach(params => {
       it(`ignores matching lines within fuzzFactor | ${params._meta}`, function() {
-        const result = linter.shouldIgnore(params.ignores, params.fuzzFactor, params.warning);
+        const result = linter.shouldIgnore(
+          params.options,
+          params.ignores,
+          params.fuzzFactor,
+          params.warning,
+        );
         assert.equal(result, params.expected);
       });
     });

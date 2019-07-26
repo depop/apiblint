@@ -17,6 +17,12 @@ export function lpad(val, length, {padWith=' ', suffix=''} = {}) {
   return String(val).padStart(length, padWith) + suffix;
 }
 
+/**
+ * Recursively find all .apib files in the given path
+ *
+ * @param {string} dirpath - (relative) path to search for .apib files in
+ * @returns {Promise<Array<string>>} list of absolute paths to .apib files
+ */
 export async function findBlueprintsInPath(dirpath) {
   return new Promise((resolve, reject) => {
     const blueprints = [];
@@ -45,6 +51,12 @@ export async function findBlueprintsInPath(dirpath) {
   });
 }
 
+/**
+ * Recursively find all .apib files in the given paths
+ *
+ * @param {Array<string>} dirpaths - (relative) paths to search for .apib files in
+ * @returns {Promise<Array<string>>} flat list of absolute paths to .apib files
+ */
 export async function findBlueprints(...dirpaths) {
   return Promise.all(
     dirpaths.map(async (dirpath) => findBlueprintsInPath(dirpath))

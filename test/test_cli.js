@@ -11,6 +11,15 @@ describe('cli', function() {
         expected: {
           files: ["path\ whatever/file1", "file2"],
           fuzzyLineRange: 5,
+          ignoreCodes: [],
+        }
+      },
+      {
+        argv: ["nodejs", "apiblint", "path\ whatever/file1", "file2", "--ignore-codes", "W6", "W8"],
+        expected: {
+          files: ["path\ whatever/file1", "file2"],
+          fuzzyLineRange: 5,
+          ignoreCodes: ["W6", "W8"],
         }
       },
       {
@@ -18,6 +27,7 @@ describe('cli', function() {
         expected: {
           files: ["path\ whatever/file1", "file2"],
           fuzzyLineRange: 3,
+          ignoreCodes: [],
         }
       },
       {
@@ -25,6 +35,7 @@ describe('cli', function() {
         expected: {
           files: ["path\ whatever/file1", "file2"],
           fuzzyLineRange: 13,
+          ignoreCodes: [],
         }
       },
       {
@@ -32,6 +43,7 @@ describe('cli', function() {
         expected: {
           files: ["path\ whatever/file1", "file2"],
           fuzzyLineRange: 8,
+          ignoreCodes: [],
         }
       },
     ].forEach(params => {
@@ -39,6 +51,7 @@ describe('cli', function() {
         const result = parseArgs(params.argv);
         assert.deepEqual(result.files, params.expected.files);
         assert.equal(result.fuzzyLineRange, params.expected.fuzzyLineRange);
+        assert.deepEqual(result.ignoreCodes, params.expected.ignoreCodes);
       });
     });
   });
@@ -46,10 +59,11 @@ describe('cli', function() {
   describe('optionsFromArgs', function() {
     [
       {
-        args: {fuzzyLineRange: 8},
+        args: {fuzzyLineRange: 8, ignoreCodes: ["W6", "W8"]},
         expected: {
           fuzzFactor: 8,
           contextSize: 2,
+          ignoreCodes: ["W6", "W8"],
           ignoreFileExt: '.apiblint',
           color: null,
           drafterOpts: {
@@ -58,10 +72,11 @@ describe('cli', function() {
         }
       },
       {
-        args: {fuzzyLineRange: 7, forceColor: true},
+        args: {fuzzyLineRange: 7, forceColor: true, ignoreCodes: []},
         expected: {
           fuzzFactor: 7,
           contextSize: 2,
+          ignoreCodes: [],
           ignoreFileExt: '.apiblint',
           color: true,
           drafterOpts: {
@@ -70,10 +85,11 @@ describe('cli', function() {
         }
       },
       {
-        args: {fuzzyLineRange: 7, noColor: true},
+        args: {fuzzyLineRange: 7, noColor: true, ignoreCodes: []},
         expected: {
           fuzzFactor: 7,
           contextSize: 2,
+          ignoreCodes: [],
           ignoreFileExt: '.apiblint',
           color: false,
           drafterOpts: {
