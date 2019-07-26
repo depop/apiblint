@@ -23,6 +23,15 @@ export function parseArgs(rawArgs) {
             `fuzzy matched within a certain range (to cope with small edits ` +
             `to the blueprint that would otherwise invalidate the ignore file)`
         })
+        .option('ignore-codes', {
+          alias: 'i',
+          type: 'array',
+          default: [],
+          desc:
+          `One or more warning codes to ignore globally, e.g.\n` +
+          `W0 W1 (this arg must either come after your list of paths `+
+          `or follow this arg with a -- and then list the paths)`
+        })
         .option('log-level', {
           alias: 'l',
           type: 'string',
@@ -63,6 +72,7 @@ export function optionsFromArgs(args) {
     fuzzFactor: args.fuzzyLineRange,
     contextSize: 2,
     ignoreFileExt: '.apiblint',
+    ignoreCodes: args.ignoreCodes,
     color: (args.noColor ? false : (args.forceColor ? true : null)),
     drafterOpts: {
       requireBlueprintName: true,
