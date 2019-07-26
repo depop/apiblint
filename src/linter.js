@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs'
+import { promises as fs } from 'fs';
 import util from 'util';
 
 import chalk from 'chalk';
@@ -10,7 +10,7 @@ import unzip from 'lodash.unzip';
 import * as log from 'loglevel';
 import range from 'python-range';
 
-import { lpad } from './utils';
+import { lpad, findBlueprints } from './utils';
 
 
 const validateBlueprint = util.promisify(drafter.validate)
@@ -28,7 +28,8 @@ const LINE_HIGHLIGHT = '*';
 const LINE_CONTEXTPAD = ' '.repeat(LINE_HIGHLIGHT.length);
 const WARNING_CODE_PREFIX = 'W';
 const WARNING_CODE_SEP = ':';
-const SEPARATOR = "";
+const WARNING_SEPARATOR = "";
+const DOC_SEPARATOR = "\n---------\n";
 
 
 /**
@@ -46,8 +47,8 @@ export function parseIgnoreFile(ignoreFile) {
       let [code, startLine, endLine] = line.split(":");
       ignores.has(code) || ignores.set(code, []);
       ignores.get(code).push({
-        startLine: parseInt(startLine),
-        endLine: parseInt(endLine),
+        startLine: parseInt(startLine) - 1,
+        endLine: parseInt(endLine) - 1,
       });
     });
   };
@@ -73,29 +74,30 @@ export function formatWarning(lines, contextSize, warning) {
     Math.min(lines.length, warning.endLine + contextSize + 1)
   )) {
     let line = lines[i];
+    let lineNo = i + 1;
     if (i == warning.startLine) {
       // first highlighted line
       let pre = line.slice(0, warning.startChar);
       let post = line.slice(warning.startChar);
       formatted.push(
-        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + chalk.gray(pre) + post
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(lineNo)) + chalk.gray(pre) + post
       );
     } else if (i > warning.startLine && i < warning.endLine) {
       // fully highlighted line
       formatted.push(
-        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + line
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(lineNo)) + line
       );
     } else if (i == warning.endLine) {
       // last highlighted line
       let pre = line.slice(0, warning.endChar);
       let post = line.slice(warning.endChar);
       formatted.push(
-        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(i)) + pre + chalk.gray(post)
+        chalk.yellow(LINE_HIGHLIGHT + formatLineNo(lineNo)) + pre + chalk.gray(post)
       );
     } else {
       // pre/post 'context' lines
       formatted.push(
-        LINE_CONTEXTPAD + chalk.yellow.dim(formatLineNo(i)) + chalk.gray(line)
+        LINE_CONTEXTPAD + chalk.yellow.dim(formatLineNo(lineNo)) + chalk.gray(line)
       );
     }
   };
@@ -118,8 +120,8 @@ export function formatWarningHeader(warning) {
     chalk.red(warning.description),
     chalk.blueBright(
       warning.code + WARNING_CODE_SEP +
-      warning.startLine + WARNING_CODE_SEP +
-      warning.endLine
+      (warning.startLine + 1).toString() + WARNING_CODE_SEP +
+      (warning.endLine + 1).toString()
     )
   ];
 }
@@ -158,7 +160,7 @@ export function shouldIgnore(ignores, fuzzFactor, warning) {
  * Extract useful information from the warning object from drafter parseResult.
  *
  * @param {Object} warning - A result from drafter.validate tool
- * @returns {Object} Start and end line/char positions describing
+ * @returns {Object} Start and end line/char positions (0-indexed) describing
  *    the code-span highlighted by the warning
  */
 export function parseWarning(rawWarning) {
@@ -206,7 +208,7 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
 
   let exitCode = 0;
   rawWarnings.forEach(rawWarning => {
-    log.info(SEPARATOR);
+    log.info(WARNING_SEPARATOR);
 
     // use module.exports so it can be mocked in tests :facepalm:
     let warning = module.exports.parseWarning(rawWarning);
@@ -227,7 +229,7 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
       log.info(line);
     });
   })
-  log.info(SEPARATOR);
+  log.info(WARNING_SEPARATOR);
   return exitCode;
 }
 
@@ -276,7 +278,13 @@ export async function lintFile(options, filename) {
  * @param {Object} options - Config values for use in downstream methods
  * @returns {Array<number>} An 'exitCode' value for each file linted
  */
-export async function lint(files, options) {
-  let lintFile_ = partial(lintFile, options)
-  return await Promise.all(files.map(lintFile_));
+export async function lint(paths, options) {
+  let files = await findBlueprints(...paths);
+  let lintFile_ = partial(lintFile, options);
+  let exitCodes = [];
+  for (let filename of files) {
+    exitCodes.push(await lintFile_(filename));
+    log.info(DOC_SEPARATOR);
+  }
+  return exitCodes;
 }

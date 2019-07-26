@@ -85,9 +85,9 @@ describe('linter', function() {
         _meta: "ignore file with leading and trailing blank lines, contains ignore codes",
         ignoreFile: (
 `
-W10:34:35
-W6:45:45
-W10:71:73
+W10:35:36
+W6:46:46
+W10:72:74
 `
         ),
         expected: new Map([
@@ -104,12 +104,12 @@ W10:71:73
         _meta: "ignore file with blank lines inbetween ignore code lines",
         ignoreFile: (
 `
-W10:34:35
+W10:35:36
 
-W6:45:45
+W6:46:46
 
 
-W10:71:73
+W10:72:74
 `
         ),
         expected: new Map([

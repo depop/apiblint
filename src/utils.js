@@ -1,3 +1,8 @@
+import fs from 'fs';
+import path from 'path';
+
+import walk from 'walkdir';
+
 
 /**
  * Left-pad a value, casting it to String, and append a suffix.
@@ -11,3 +16,38 @@
 export function lpad(val, length, {padWith=' ', suffix=''} = {}) {
   return String(val).padStart(length, padWith) + suffix;
 }
+
+export async function findBlueprintsInPath(dirpath) {
+  return new Promise((resolve, reject) => {
+    const blueprints = [];
+    const fstats = fs.statSync(dirpath);
+    if (fstats.isFile()) {
+      if (dirpath.endsWith('.apib')) {
+        blueprints.push(path.resolve(dirpath));
+      }
+      resolve(blueprints);
+    } else
+    if (fstats.isDirectory()) {
+      const emitter = walk(dirpath);
+      emitter.on('file', function(filename, stat) {
+        if (filename.endsWith('.apib')) {
+          blueprints.push(filename);
+        }
+      });
+      emitter.on('error', reject);
+      emitter.on('fail', reject);
+      emitter.on('end', () => {
+        resolve(blueprints);
+      });      
+    } else {
+      reject(dirpath);
+    }
+  });
+}
+
+export async function findBlueprints(...dirpaths) {
+  return Promise.all(
+    dirpaths.map(async (dirpath) => findBlueprintsInPath(dirpath))
+  ).then(array => array.flat());
+}
+
