@@ -1,0 +1,59 @@
+{
+  "name": "@depop/apiblint",
+  "version": "0.1.0",
+  "description": "Linter for .apib blueprint docs, can be run as a pre-commit hook.",
+  "main": "src/cli.js",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "drafter": "^2.0.0-pre.1",
+    "escape-string-regexp": "^2.0.0",
+    "esm": "^3.2.25",
+    "lodash.partial": "^4.2.1",
+    "lodash.partialright": "^4.2.1",
+    "loglevel": "^1.6.3",
+    "pluralize": "^8.0.0",
+    "python-range": "^1.0.4",
+    "walkdir": "^0.4.1",
+    "yargs": "^13.3.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/node": "^7.5.5",
+    "@babel/plugin-proposal-async-generator-functions": "^7.2.0",
+    "@babel/plugin-proposal-export-default-from": "^7.5.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.5.2",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/register": "^7.5.5",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.0",
+    "regenerator-runtime": "^0.13.3",
+    "sinon": "^7.3.2",
+    "yaml": "^1.6.0"
+  },
+  "bin": {
+    "@depop/apiblint": "bin/apiblint",
+    "apiblint": "bin/apiblint"
+  },
+  "scripts": {
+    "test": "mocha --require @babel/register --require regenerator-runtime"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depop/apiblint.git"
+  },
+  "keywords": [
+    "cli",
+    "apib",
+    "blueprint"
+  ],
+  "author": "dev@depop.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/depop/apiblint/issues"
+  },
+  "homepage": "https://github.com/depop/apiblint#readme",
+  "publishConfig": {
+    "access": "public"
+  }
+}

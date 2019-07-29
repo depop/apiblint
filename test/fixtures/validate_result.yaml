@@ -1,0 +1,2145 @@
+element: "parseResult"
+content:
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 21
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 564
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 21
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 22
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 580
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 22
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 37
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 983
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 37
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 38
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 999
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 38
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 43
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 1146
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 43
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 26
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 44
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 1176
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 44
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 24
+    content: "message-body asset is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 8 spaces or 2 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 56
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 1578
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 56
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 57
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 1594
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 57
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 62
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 1748
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 62
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 26
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 63
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 1778
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 63
+                      column:
+                        element: "number"
+                        content: 57
+                    content: 53
+    content: "message-body asset is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 8 spaces or 2 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 73
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 2068
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 73
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 74
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 2084
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 74
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 79
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 2237
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 79
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 26
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 80
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 2267
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 80
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 24
+    content: "message-body asset is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 8 spaces or 2 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 92
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 2675
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 92
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 93
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 2691
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 93
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 98
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 2847
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 98
+                      column:
+                        element: "number"
+                        content: 28
+                    content: 26
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 99
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 2877
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 99
+                      column:
+                        element: "number"
+                        content: 57
+                    content: 53
+    content: "message-body asset is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 8 spaces or 2 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 107
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 3096
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 107
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 108
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 3112
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 108
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 120
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 3438
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 120
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 121
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 3454
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 121
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 127
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 3719
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 127
+                      column:
+                        element: "number"
+                        content: 38
+                    content: 32
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 115
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 3278
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 116
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 36
+    content: "parameter 'before' is not found within the URI template '/api/v2/chat/subscriptions{?limit, before, after}' for 'Paginated subscriptions' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 115
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 3278
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 116
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 36
+    content: "parameter 'after' is not found within the URI template '/api/v2/chat/subscriptions{?limit, before, after}' for 'Paginated subscriptions' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 115
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 3278
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 116
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 36
+    content: "parameter 'unreadOnly' is not found within the URI template '/api/v2/chat/subscriptions{?limit, before, after}' for 'Paginated subscriptions' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 12
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 113
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 3197
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 114
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 81
+    content: "URI template expression \"?limit, before, after\" contains spaces. Allowed characters for expressions are A-Z a-z 0-9 _ and percent encoded characters"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 137
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 3967
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 137
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 138
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 3983
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 138
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 156
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 4497
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 156
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 157
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 4513
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 157
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 168
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 4783
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 168
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 169
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 4799
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 169
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 183
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 5123
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 183
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 184
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 5139
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 184
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 199
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 5494
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 199
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 200
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 5510
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 200
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 215
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 5863
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 215
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 216
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 5879
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 216
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 241
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 6466
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 241
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 242
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 6482
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 242
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 254
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 6807
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 254
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 255
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 6823
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 255
+                      column:
+                        element: "number"
+                        content: 75
+                    content: 67
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 251
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 6756
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 252
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 35
+    content: "parameter 'limit' is not found within the URI template '/api/v2/chat/messages{?group_id, limit, before, after}' for 'Paginated Messages' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 251
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 6756
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 252
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 35
+    content: "parameter 'before' is not found within the URI template '/api/v2/chat/messages{?group_id, limit, before, after}' for 'Paginated Messages' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 8
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 251
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 6756
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 252
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 35
+    content: "parameter 'after' is not found within the URI template '/api/v2/chat/messages{?group_id, limit, before, after}' for 'Paginated Messages' "
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 12
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 249
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 6675
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 250
+                      column:
+                        element: "number"
+                        content: 1
+                    content: 81
+    content: "URI template expression \"?group_id, limit, before, after\" contains spaces. Allowed characters for expressions are A-Z a-z 0-9 _ and percent encoded characters"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 293
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 8312
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 293
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 294
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 8328
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 294
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 10
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 324
+                      column:
+                        element: "number"
+                        content: 7
+                    content: 9435
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 324
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 8
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 325
+                      column:
+                        element: "number"
+                        content: 9
+                    content: 9451
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 325
+                      column:
+                        element: "number"
+                        content: 71
+                    content: 63
+    content: "headers is expected to be a pre-formatted code block, separate it by a newline and indent every of its line by 12 spaces or 3 tabs"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 535
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16325
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 535
+                      column:
+                        element: "number"
+                        content: 35
+                    content: 33
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 536
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16360
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 536
+                      column:
+                        element: "number"
+                        content: 29
+                    content: 27
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 540
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16416
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 540
+                      column:
+                        element: "number"
+                        content: 41
+                    content: 39
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 541
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16457
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 541
+                      column:
+                        element: "number"
+                        content: 29
+                    content: 27
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 545
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16508
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 545
+                      column:
+                        element: "number"
+                        content: 68
+                    content: 66
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 6
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 548
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 16670
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 548
+                      column:
+                        element: "number"
+                        content: 68
+                    content: 66
+    content: "no value(s) specified"
+  -
+    element: "annotation"
+    meta:
+      classes:
+        element: "array"
+        content:
+          -
+            element: "string"
+            content: "warning"
+    attributes:
+      code:
+        element: "number"
+        content: 4
+      sourceMap:
+        element: "array"
+        content:
+          -
+            element: "sourceMap"
+            content:
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 398
+                      column:
+                        element: "number"
+                        content: 3
+                    content: 11306
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 398
+                      column:
+                        element: "number"
+                        content: 35
+                    content: 33
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 399
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 11343
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 399
+                      column:
+                        element: "number"
+                        content: 14
+                    content: 10
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 400
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 11357
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 400
+                      column:
+                        element: "number"
+                        content: 21
+                    content: 17
+              -
+                element: "array"
+                content:
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 401
+                      column:
+                        element: "number"
+                        content: 5
+                    content: 11378
+                  -
+                    element: "number"
+                    attributes:
+                      line:
+                        element: "number"
+                        content: 401
+                      column:
+                        element: "number"
+                        content: 18
+                    content: 14
+    content: "duplicit value in enumeration"
