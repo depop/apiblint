@@ -6,7 +6,7 @@ import drafter from 'drafter';
 import escapeStringRegexp from 'escape-string-regexp';
 import partial from 'lodash.partial';
 import partialRight from 'lodash.partialright';
-import unzip from 'lodash.unzip';
+import pluralize from 'pluralize';
 import * as log from 'loglevel';
 import range from 'python-range';
 
@@ -30,6 +30,14 @@ const WARNING_CODE_PREFIX = 'W';
 const WARNING_CODE_SEP = ':';
 const WARNING_SEPARATOR = "";
 const DOC_SEPARATOR = "\n----------\n";
+
+
+/**
+ * @typedef {Object} LintingResult
+ * @property {number} exitCode - how this program should exit when complete
+ * @property {number} warningCount - number of non-ignored warnings for this file
+ * @property {number} ignoredCount - number of ignored warnings for this file
+ */
 
 
 /**
@@ -195,10 +203,12 @@ export function parseWarning(rawWarning) {
  * @param {Array<string>} lines - The .apib source file as array of lines
  * @param {Array<Object>} rawWarnings - Results from drafter.validate tool
  * @param {string} filename - Path to the .apib file being linted
- * @returns {number} An 'exitCode' value representing success or failure
+ * @returns {Array<number>} Count of non-ignored and ignored warnings for this file
  */
 export async function processWarnings(options, lines, rawWarnings, filename) {
-  log.info(chalk.red.bold(rawWarnings.length + " linting issues found"));
+  log.info(chalk.red.bold(
+    rawWarnings.length + ` linting ${pluralize('issues', rawWarnings.length)} found`
+  ));
 
   let ignoreFileName = filename + options.ignoreFileExt;
   log.info(
@@ -212,7 +222,8 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
   let formatWarning_ = partial(formatWarning, lines, options.contextSize);
   let shouldIgnore_ = partial(shouldIgnore, options, ignores, options.fuzzFactor);
 
-  let exitCode = 0;
+  let warningCount = 0;
+  let ignoredCount = 0;
   rawWarnings.forEach(rawWarning => {
     log.info(WARNING_SEPARATOR);
 
@@ -226,17 +237,18 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
 
     if (shouldIgnore_(warning)) {
       log.info(chalk.yellow('(ignored)'));
+      ignoredCount++;
       return; // continue forEach
     }
     // not ignored
-    exitCode = 1;
+    warningCount++;
 
     formatWarning_(warning).forEach(line => {
       log.info(line);
     });
   })
   log.info(WARNING_SEPARATOR);
-  return exitCode;
+  return [warningCount, ignoredCount];
 }
 
 /**
@@ -244,7 +256,8 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
  *
  * @param {Object} options - Config values for use in downstream methods
  * @param {string} filename - Path to file to lint
- * @returns {number} An 'exitCode' value representing success or failure
+ * @returns {LintingResult} An 'exitCode' value representing success or failure
+ *    and a 'warningCount' of non-ignored warnings
  */
 export async function lintFile(options, filename) {
   log.info(chalk.bold(filename));
@@ -258,12 +271,15 @@ export async function lintFile(options, filename) {
   });
 
   let exitCode = 0;
+  let warningCount = 0;
+  let ignoredCount = 0;
   if (warnings) {
     // ⚠️
     if (warnings.element == 'parseResult') {
       // typical linting results
       let lines = blueprint.split(NEWLINE);
-      exitCode = await processWarnings(options, lines, warnings.content, filename);
+      [warningCount, ignoredCount] = await processWarnings(options, lines, warnings.content, filename);
+      exitCode = (warningCount > 0) ? 1 : 0;
     } else {
       // "should not happen"
       log.info(chalk.red.bold("Error: unrecognised linter result"), warnings);
@@ -273,7 +289,54 @@ export async function lintFile(options, filename) {
     // 🎉
     log.info(chalk.green('OK'));
   };
-  return exitCode;
+  return {
+    exitCode: exitCode,
+    warningCount: warningCount,
+    ignoredCount: ignoredCount,
+  };
+}
+
+export function formatSummary(results) {
+  let [warningsTotal, ignoredTotal] = [...results.values()].reduce(
+    ([warnings, ignored], {warningCount, ignoredCount}) => [
+      warnings + warningCount,
+      ignored + ignoredCount,
+    ],
+    [0, 0]
+  );
+  let filesWithWarnings = [...results.entries()].filter(([filename, result]) => result.warningCount > 0);
+
+  if (warningsTotal > 0) {
+    log.info(chalk.red(
+      chalk.bold(warningsTotal) +
+      ` linting ${pluralize('issues', warningsTotal)} found across` +
+      ` ${results.size} ${pluralize('files', results.size)}.` +
+      ` (${ignoredTotal} ignored).\n`
+    ));
+    log.info(chalk.red(
+      chalk.bold(filesWithWarnings.length) +
+      ` ${pluralize('files', filesWithWarnings.length)} with issues:\n`
+    ));
+    filesWithWarnings.forEach(([filename, {warningCount}]) => {
+      log.info(
+        `• ` + chalk.hex('#999999')(`${filename}\n`) +
+        chalk.red(
+          '  > ' + chalk.bold(warningCount) + ` ${pluralize('issues', warningCount)}`
+        )
+      );
+    });
+    log.info("");
+    log.info("👎 please fix these before committing");
+  } else {  
+    log.info(chalk.green(
+      chalk.bold(warningsTotal) +
+      ` linting ${pluralize('issues', warningsTotal)} found across` +
+      ` ${results.size} ${pluralize('files', results.size)}.` +
+      ` (${ignoredTotal} ignored).\n`
+    ));
+    log.info("👍");
+  }
+  log.info("");
 }
 
 /**
@@ -282,15 +345,16 @@ export async function lintFile(options, filename) {
  *
  * @param {Array<string>} files - Paths to the files to be linted
  * @param {Object} options - Config values for use in downstream methods
- * @returns {Array<number>} An 'exitCode' value for each file linted
+ * @returns {Map<string, LintingResult>} 'exitCode' and 'warningCount' for each file linted
  */
 export async function lint(paths, options) {
   let files = await findBlueprints(...paths);
   let lintFile_ = partial(lintFile, options);
-  let exitCodes = [];
+  let results = new Map();
   for (let filename of files) {
-    exitCodes.push(await lintFile_(filename));
+    results.set(filename, await lintFile_(filename));
     log.info(DOC_SEPARATOR);
   }
-  return exitCodes;
+  formatSummary(results)
+  return results;
 }

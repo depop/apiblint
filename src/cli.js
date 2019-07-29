@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import * as log from 'loglevel';
 import yargs from 'yargs';
 
-import {lint} from './linter';
+import { lint } from './linter';
 
 
 /**
@@ -42,14 +42,14 @@ export function parseArgs(rawArgs) {
         .option('no-color', {
           alias: 'n',
           type: 'boolean',
-          default: undefined,  // default: false triggers cnflict warning by yargs
+          default: undefined,  // default: false triggers conflict warning by yargs
           describe:
             `Monochrome output only`
         })
         .option('force-color', {
           alias: 'c',
           type: 'boolean',
-          default: undefined,  // default: false triggers cnflict warning by yargs
+          default: undefined,  // default: false triggers conflict warning by yargs
           conflicts: 'no-color',
           describe:
             `When running as a pre-commit hook we are unable to detect if the ` +
@@ -86,7 +86,7 @@ export function optionsFromArgs(args) {
  *
  * @param {Array<string>} rawArgs - i.e. from process.argv
  */
-export async function cli(rawArgs) {
+export async function main(rawArgs) {
   let args = parseArgs(rawArgs);
   let options = optionsFromArgs(args);
 
@@ -100,6 +100,8 @@ export async function cli(rawArgs) {
 
   log.debug(options);
 
-  let exitCodes = await lint(args.files, options);
+  let results = await lint(args.files, options);
+  let exitCodes = [...results.values()].map(result => result.exitCode);
+
   process.exit(Math.max(...exitCodes));
 }

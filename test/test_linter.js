@@ -243,7 +243,7 @@ W10:72:74
         _meta: "no warnings",
         warnings: [],
         readIgnoreFile: Promise.reject(), // not found
-        expected: 0
+        expected: [0, 0]
       },
       {
         _meta: "warnings found but all ignored",
@@ -260,7 +260,7 @@ W10:72:74
         readIgnoreFile: Promise.resolve(`
 W10:36:37
 `),
-        expected: 0
+        expected: [0, 1]
       },
       {
         _meta: "warnings found and not all ignored",
@@ -275,7 +275,7 @@ W10:36:37
           }
         ],
         readIgnoreFile: Promise.resolve(``),
-        expected: 1
+        expected: [1, 0]
       },
     ].forEach(params => {
       it(`will report all (and only) non-ignored warnings, returning non-zero exitCode if warnings reported | ${params._meta}`, async function() {
@@ -289,7 +289,7 @@ W10:36:37
         let rawWarnings = params.warnings.map(_ => new Object());
 
         const result = await linter.processWarnings(this.options, [], rawWarnings, "dummy.apib");
-        assert.equal(result, params.expected);
+        assert.deepEqual(result, params.expected);
       });
     });
 

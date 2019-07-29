@@ -1,6 +1,10 @@
 import { assert } from "chai"
+import sinon from "sinon";
 
-import { parseArgs, optionsFromArgs } from '../src/cli';
+import { parseArgs, optionsFromArgs, main } from '../src/cli';
+
+import * as cli from '../src/cli';
+import * as linter from '../src/linter';
 
 
 describe('cli', function() {
@@ -111,5 +115,57 @@ describe('cli', function() {
         assert.deepEqual(result, params.expected);
       });
     });
+  });
+
+  describe('main', function() {
+
+    let exit_stub;
+    let lint_stub;
+
+    beforeEach(function() {
+      exit_stub = sinon.stub(process, 'exit');
+      lint_stub = sinon.stub(linter, "lint");
+    });
+    afterEach(function () {
+      exit_stub.restore();
+      lint_stub.restore();
+    });
+
+    [
+      {
+        _meta: 'all files green',
+        results: new Map([
+          ['dummy1.apib', {exitCode: 0}],
+          ['dummy2.apib', {exitCode: 0}],
+          ['dummy3.apib', {exitCode: 0}],
+        ]),
+        expected: 0
+      },
+      {
+        _meta: 'one file reported linting issues',
+        results: new Map([
+          ['dummy1.apib', {exitCode: 0}],
+          ['dummy2.apib', {exitCode: 1}],
+          ['dummy3.apib', {exitCode: 0}],
+        ]),
+        expected: 1
+      },
+      {
+        _meta: 'one file with linting issue, one file with higher error',
+        results: new Map([
+          ['dummy1.apib', {exitCode: 3}],
+          ['dummy2.apib', {exitCode: 0}],
+          ['dummy3.apib', {exitCode: 1}],
+        ]),
+        expected: 3
+      },
+    ].forEach(params => {
+      it(`exits with highest exitCode returned from linting files | ${params._meta}`, async function() {
+        lint_stub.resolves(params.results);
+        await main([...params.results.keys()], {});
+        sinon.assert.calledWith(exit_stub, params.expected);
+      });
+    });
+
   });
 });
