@@ -65,8 +65,7 @@ export function parseIgnoreFile(ignoreFile) {
 
 /**
  * Take description of code-span for a particular warning and output the
- * affected lines with context. Used both for display to console and as a
- * for comparing with ignore file.
+ * affected lines with context.
  *
  * @param {Array<string>} lines - The .apib source file as array of lines
  * @param {number} contextSize - How many lines ± of context to display around
@@ -113,9 +112,7 @@ export function formatWarning(lines, contextSize, warning) {
 }
 
 /**
- * Take description of code-span for a particular warning and output the
- * affected lines with context. Used both for display to console and as a
- * for comparing with ignore file.
+ * Output summary (description and ignore-code) of a single warning.
  *
  * @param {Array<string>} lines - The .apib source file as array of lines
  * @param {number} contextSize - How many lines ± of context to display around
@@ -252,12 +249,11 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
 }
 
 /**
- * Lint a single blueprint file
+ * Lint a single blueprint file.
  *
  * @param {Object} options - Config values for use in downstream methods
  * @param {string} filename - Path to file to lint
- * @returns {LintingResult} An 'exitCode' value representing success or failure
- *    and a 'warningCount' of non-ignored warnings
+ * @returns {LintingResult}
  */
 export async function lintFile(options, filename) {
   log.info(chalk.bold(filename));
@@ -296,6 +292,11 @@ export async function lintFile(options, filename) {
   };
 }
 
+/**
+ * Output a summary of linting results for all files.
+ *
+ * @param {Map<string, LintingResult>} results - for all files
+ */
 export function formatSummary(results) {
   let [warningsTotal, ignoredTotal] = [...results.values()].reduce(
     ([warnings, ignored], {warningCount, ignoredCount}) => [
