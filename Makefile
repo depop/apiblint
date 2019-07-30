@@ -1,7 +1,7 @@
 .PHONY: pypi tag test
 
 tag:
-	git tag $$(jq -r '.version' package.json)")
+	git tag $$(jq -r '.version' package.json)
 	git push --tags
 
 test:
