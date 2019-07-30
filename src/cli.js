@@ -23,6 +23,14 @@ export function parseArgs(rawArgs) {
             `fuzzy matched within a certain range (to cope with small edits ` +
             `to the blueprint that would otherwise invalidate the ignore file)`
         })
+        .option('context-lines', {
+          alias: 'c',
+          type: 'number',
+          default: 2,
+          describe:
+            `How many lines of 'context' to display above and below the highlighted ` +
+            `lines where the warning occurs.`
+        })
         .option('ignore-codes', {
           alias: 'i',
           type: 'array',
@@ -47,7 +55,7 @@ export function parseArgs(rawArgs) {
             `Monochrome output only`
         })
         .option('force-color', {
-          alias: 'c',
+          alias: 'f',
           type: 'boolean',
           default: undefined,  // default: false triggers conflict warning by yargs
           conflicts: 'no-color',
@@ -70,7 +78,7 @@ export function parseArgs(rawArgs) {
 export function optionsFromArgs(args) {
   return {
     fuzzFactor: args.fuzzyLineRange,
-    contextSize: 2,
+    contextSize: args.contextLines,
     ignoreFileExt: '.apiblint',
     ignoreCodes: args.ignoreCodes,
     color: (args.noColor ? false : (args.forceColor ? true : null)),

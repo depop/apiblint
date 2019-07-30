@@ -71,7 +71,7 @@ describe('cli', function() {
   describe('optionsFromArgs', function() {
     [
       {
-        args: {fuzzyLineRange: 8, ignoreCodes: ["W6", "W8"]},
+        args: {fuzzyLineRange: 8, ignoreCodes: ["W6", "W8"], contextLines: 2},
         expected: {
           fuzzFactor: 8,
           contextSize: 2,
@@ -84,10 +84,10 @@ describe('cli', function() {
         }
       },
       {
-        args: {fuzzyLineRange: 7, forceColor: true, ignoreCodes: []},
+        args: {fuzzyLineRange: 7, forceColor: true, ignoreCodes: [], contextLines: 3},
         expected: {
           fuzzFactor: 7,
-          contextSize: 2,
+          contextSize: 3,
           ignoreCodes: [],
           ignoreFileExt: '.apiblint',
           color: true,
@@ -97,10 +97,10 @@ describe('cli', function() {
         }
       },
       {
-        args: {fuzzyLineRange: 7, noColor: true, ignoreCodes: []},
+        args: {fuzzyLineRange: 7, noColor: true, ignoreCodes: [], contextLines: 1},
         expected: {
           fuzzFactor: 7,
-          contextSize: 2,
+          contextSize: 1,
           ignoreCodes: [],
           ignoreFileExt: '.apiblint',
           color: false,
