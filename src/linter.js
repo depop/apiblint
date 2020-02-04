@@ -208,11 +208,6 @@ export async function processWarnings(options, lines, rawWarnings, filename) {
   ));
 
   let ignoreFileName = filename + options.ignoreFileExt;
-  log.info(
-    'To ignore any of these instances, copy and paste the blue\n' +
-    '<code>:<startLine>:<endLine> error position specifier\n' +
-    'into an ignore file at: ' + chalk.bold(ignoreFileName)
-  )
   let ignoreFile = await fs.readFile(ignoreFileName, 'utf8').catch(err => {});
   let ignores = parseIgnoreFile(ignoreFile);
 
@@ -297,7 +292,7 @@ export async function lintFile(options, filename) {
  *
  * @param {Map<string, LintingResult>} results - for all files
  */
-export function formatSummary(results) {
+export function formatSummary(results, options) {
   let [warningsTotal, ignoredTotal] = [...results.values()].reduce(
     ([warnings, ignored], {warningCount, ignoredCount}) => [
       warnings + warningCount,
@@ -327,8 +322,16 @@ export function formatSummary(results) {
       );
     });
     log.info("");
+    log.info(
+      'To ignore any of these instances, just copy and paste the blue\n' +
+      chalk.blueBright('<code>:<startLine>:<endLine>') +
+        ' error position specifier from the relevant\n' +
+      'warning(s) above into an ignore file at: ' +
+        chalk.bold('<blueprint file name>' + options.ignoreFileExt)
+    )
+    log.info("");
     log.info("👎 please fix these before committing");
-  } else {  
+  } else {
     log.info(chalk.green(
       chalk.bold(warningsTotal) +
       ` linting ${pluralize('issues', warningsTotal)} found across` +
@@ -356,6 +359,6 @@ export async function lint(paths, options) {
     results.set(filename, await lintFile_(filename));
     log.info(DOC_SEPARATOR);
   }
-  formatSummary(results)
+  formatSummary(results, options)
   return results;
 }
