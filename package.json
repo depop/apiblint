@@ -1,6 +1,6 @@
 {
   "name": "@depop/apiblint",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Linter for .apib blueprint docs, can be run as a pre-commit hook.",
   "main": "src/cli.js",
   "dependencies": {
