@@ -137,7 +137,7 @@ export function formatWarningHeader(warning) {
  *
  * @param {Object} options - Config values
  * @param {Map<string, Array<Object>>} ignores - Parsed representation of the
- *    .apiblint ignore file
+ *    .apiblint ignore file, keyed by prefixed warning code
  * @param {number} fuzzFactor - How many lines ± to fuzzy match ignore blocks
  * @param {Object} warning - Parsed warning object from `parseWarning`
  * @returns {boolean} whether to ignore this warning
