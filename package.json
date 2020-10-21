@@ -10,7 +10,7 @@
     "esm": "^3.2.25",
     "lodash.partial": "^4.2.1",
     "lodash.partialright": "^4.2.1",
-    "loglevel": "^1.6.8",
+    "loglevel": "^1.7.0",
     "pluralize": "^8.0.0",
     "python-range": "^1.0.4",
     "walkdir": "^0.4.1",
