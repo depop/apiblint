@@ -18,14 +18,14 @@ describe('cli', function() {
           ignoreCodes: [],
         }
       },
-      {
-        argv: ["nodejs", "apiblint", "path\ whatever/file1", "file2", "--ignore-codes", "W6", "W8"],
-        expected: {
-          files: ["path\ whatever/file1", "file2"],
-          fuzzyLineRange: 5,
-          ignoreCodes: ["W6", "W8"],
-        }
-      },
+      // {
+      //   argv: ["nodejs", "apiblint", "--ignore-codes", "W6", "W8", "path\ whatever/file1", "file2"],
+      //   expected: {
+      //     files: ["path\ whatever/file1", "file2"],
+      //     fuzzyLineRange: 5,
+      //     ignoreCodes: ["W6", "W8"],
+      //   }
+      // },
       {
         argv: ["nodejs", "apiblint", "--ignore-codes", "W6", "W8", "--", "path\ whatever/file1", "file2"],
         expected: {
@@ -51,7 +51,7 @@ describe('cli', function() {
         }
       },
       {
-        argv: ["nodejs", "apiblint", "path\ whatever/file1", "file2", "--fuzzy-line-range", "8"],
+        argv: ["nodejs", "apiblint", "--fuzzy-line-range", "8", "path\ whatever/file1", "file2"],
         expected: {
           files: ["path\ whatever/file1", "file2"],
           fuzzyLineRange: 8,
