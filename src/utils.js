@@ -62,4 +62,3 @@ export async function findBlueprints(...dirpaths) {
     dirpaths.map(async (dirpath) => findBlueprintsInPath(dirpath))
   ).then(array => array.flat());
 }
-

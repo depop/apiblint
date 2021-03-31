@@ -7,7 +7,7 @@ Linter for `.apib` blueprint docs, can be run as a [pre-commit](https://pre-comm
 
 ### Pre-requisites
 
-`apiblint` is a node.js script. It was built against node v12, therefore may not work on older versions.
+`apiblint` is a node.js script. It is currently built against node v14, therefore may not work on older (or newer) versions.
 
 It is intended to be used as a [pre-commit](https://pre-commit.com#install) hook. So first step is to install the pre-commit tool.
 
@@ -35,7 +35,7 @@ repos:
 
 ### Stand-alone installation
 
-You're on your own for now; set up a node 12 environment with `nodenv`, download the source from GitHub and `npm install <path/to/source dir>`. The tool will be installed to your local bin path.
+You're on your own for now; set up a node 14 environment with `nodenv`, download the source from GitHub and `npm install <path/to/source dir>`. The tool will be installed to your local bin path.
 
 
 ## Usage
@@ -93,6 +93,14 @@ To ease this a little bit, by default `apiblint` does a 'fuzzy match' on the lin
 
 
 ## Development
+
+Set up:
+```bash
+brew install nodenv
+nodenv install 14.6.0
+nodenv shell 14.6.0
+npm install
+```
 
 To run the test suite: `npm test` from within the project source root.
 

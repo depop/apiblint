@@ -3,7 +3,7 @@ jobs:
   build:
     working_directory: ~/apiblint
     docker:
-      - image: circleci/node:12.6
+      - image: circleci/node:14.6
     steps:
       - checkout
       - run:
