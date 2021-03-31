@@ -3,7 +3,7 @@
     description: Runs apiary/drafter.js validation on your .apib files
     entry: apiblint
     language: node
-    language_version: '12.4.0'
+    language_version: '14.6.0'
     types: [file, non-executable, text]
     files: ^.+\.apib$
     pass_filenames: true

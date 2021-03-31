@@ -10,33 +10,33 @@
     "esm": "^3.2.25",
     "lodash.partial": "^4.2.1",
     "lodash.partialright": "^4.2.1",
-    "loglevel": "^1.7.0",
+    "loglevel": "^1.7.1",
     "pluralize": "^8.0.0",
     "python-range": "^1.0.4",
     "walkdir": "^0.4.1",
     "yargs": "^13.3.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.10.5",
-    "@babel/core": "^7.10.5",
-    "@babel/node": "^7.10.5",
-    "@babel/plugin-proposal-async-generator-functions": "^7.10.5",
-    "@babel/plugin-proposal-export-default-from": "^7.10.4",
-    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
-    "@babel/preset-env": "^7.10.4",
-    "@babel/register": "^7.5.5",
-    "chai": "^4.2.0",
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.14",
+    "@babel/node": "^7.13.13",
+    "@babel/plugin-proposal-async-generator-functions": "^7.13.8",
+    "@babel/plugin-proposal-export-default-from": "^7.12.13",
+    "@babel/plugin-proposal-export-namespace-from": "^7.12.13",
+    "@babel/preset-env": "^7.13.12",
+    "@babel/register": "^7.13.14",
+    "chai": "^4.3.4",
     "mocha": "^6.2.3",
-    "regenerator-runtime": "^0.13.5",
+    "regenerator-runtime": "^0.13.7",
     "sinon": "^7.5.0",
-    "yaml": "^1.10.0"
+    "yaml": "^1.10.2"
   },
   "bin": {
     "@depop/apiblint": "bin/apiblint",
     "apiblint": "bin/apiblint"
   },
   "scripts": {
-    "test": "mocha --require @babel/register --require regenerator-runtime"
+    "test": "mocha --require @babel/register --require regenerator-runtime --trace-warnings"
   },
   "repository": {
     "type": "git",
